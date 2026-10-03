@@ -1,0 +1,281 @@
+@import "tailwindcss";
+
+/* ───────────── Design tokens (from Figma) ───────────── */
+@theme {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-wine: #500b28;
+  --color-red: #ff003d;
+  --color-red-strong: #e60037; /* red that passes contrast behind small white text */
+  --color-pink: #e888d1;
+  /* picked from the design, not in the official list */
+  --color-gold: #f6b33e;
+  --color-amber: #ffb000;
+  --color-navy: #121827;
+  --color-moss: #3f4f22;
+  --color-pitch: #0b1a12;
+  --color-lime: #b6ff3b;
+
+  --font-display: "Montserrat Variable", "Montserrat", "Segoe UI", Arial, sans-serif; /* stand-in for AA Stetica */
+  --font-condensed: "Koulen", "Impact", "Arial Narrow", sans-serif;
+
+  /* mobile layout below 900px, desktop grid above */
+  --breakpoint-desk: 56.25rem;
+}
+
+:root {
+  --page-pad: clamp(1rem, 3vw, 4rem);
+}
+
+html {
+  background: #1c1216;
+  color: var(--color-white);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Past 1920px the whole layout scales up proportionally (every size is in
+   rem), so big monitors and zoomed-out browsers don't get empty side gaps. */
+@media (min-width: 1920px) {
+  html {
+    font-size: calc(100vw / 120);
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-pink);
+  outline-offset: 3px;
+}
+
+/* Slow light sweep across "PROJECT IN MIND?" */
+.cta-shimmer {
+  background: linear-gradient(100deg, #ff003d 0%, #ff003d 40%, #ffc2d3 50%, #ff003d 60%, #ff003d 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  color: transparent;
+  animation: cta-shimmer 4.5s ease-in-out infinite;
+}
+
+@keyframes cta-shimmer {
+  0% { background-position: 100% 0; }
+  60%, 100% { background-position: 0% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-shimmer {
+    animation: none;
+    background: none;
+    color: var(--color-red);
+  }
+}
+
+/* ───────────── Idle objects in project cards ─────────────
+   They use the individual translate/rotate properties so they never
+   fight with transforms set by GSAP or hover effects. */
+.decor-float {
+  animation: decor-float 3.2s ease-in-out infinite;
+}
+.decor-float-slow {
+  animation: decor-float-slow 5s ease-in-out infinite;
+}
+.decor-spin {
+  animation: decor-spin 16s linear infinite;
+}
+.decor-shadow {
+  animation: decor-shadow 3.2s ease-in-out infinite;
+}
+.decor-sway {
+  transform-origin: 50% 85%;
+  animation: decor-sway 6s ease-in-out infinite;
+}
+.decor-petal {
+  opacity: 0;
+  animation-name: decor-petal;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes decor-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -12%; }
+}
+@keyframes decor-float-slow {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  50% { translate: 0 -6%; rotate: 4deg; }
+}
+@keyframes decor-spin {
+  to { rotate: 360deg; }
+}
+@keyframes decor-shadow {
+  0%, 100% { scale: 1; opacity: 1; }
+  50% { scale: 0.7; opacity: 0.55; }
+}
+@keyframes decor-sway {
+  0%, 100% { rotate: -1.6deg; }
+  50% { rotate: 1.6deg; }
+}
+@keyframes decor-petal {
+  0% { translate: 0 0; rotate: 0deg; opacity: 0; }
+  10% { opacity: 0.85; }
+  70% { opacity: 0.6; }
+  100% { translate: 3rem 22rem; rotate: 300deg; opacity: 0; }
+}
+
+.decor-float-gentle {
+  animation: decor-float-gentle 7s ease-in-out infinite;
+}
+.decor-glow {
+  animation: decor-glow 5s ease-in-out infinite;
+}
+.decor-pulse {
+  animation: decor-pulse 2.8s ease-in-out infinite;
+}
+.decor-sweep {
+  animation: decor-sweep 5.5s ease-in-out infinite;
+}
+.decor-smoke {
+  opacity: 0;
+  transform-origin: 50% 100%;
+  animation: decor-smoke 7s ease-out infinite;
+  filter: blur(2px);
+}
+.decor-leaf {
+  animation-name: decor-leaf;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes decor-float-gentle {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  50% { translate: 0 -2.5%; rotate: -0.8deg; }
+}
+@keyframes decor-glow {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+@keyframes decor-pulse {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.7; }
+}
+@keyframes decor-sweep {
+  0%, 15% { translate: 0 0; }
+  65%, 100% { translate: 500% 0; }
+}
+@keyframes decor-smoke {
+  0% { opacity: 0; translate: 0 10%; scale: 0.8 0.6; }
+  20% { opacity: 0.9; }
+  100% { opacity: 0; translate: 25% -35%; scale: 1.6 1.2; }
+}
+@keyframes decor-leaf {
+  0% { translate: 0 0; rotate: 0deg; opacity: 0; }
+  12% { opacity: 0.8; }
+  85% { opacity: 0.6; }
+  100% { translate: 9rem -5rem; rotate: 220deg; opacity: 0; }
+}
+
+/* The tea photo has hard edges where the hand and table were cut;
+   fade them into the card */
+.tea-image {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 22%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decor-float-gentle, .decor-glow, .decor-pulse {
+    animation: none;
+  }
+  .decor-sweep, .decor-smoke, .decor-leaf {
+    display: none;
+  }
+  .decor-float, .decor-float-slow, .decor-spin, .decor-shadow, .decor-sway {
+    animation: none;
+  }
+  .decor-petal {
+    display: none;
+  }
+}
+
+/* Pitch lines keep a crisp 2px width whatever the card size */
+.pitch-lines * {
+  vector-effect: non-scaling-stroke;
+}
+
+/* Mowed-grass stripes for the pitch card */
+.pitch-grass {
+  background:
+    radial-gradient(120% 90% at 70% 40%, rgb(255 255 255 / 0.06), transparent 60%),
+    repeating-linear-gradient(180deg, #1f7038 0 12.5%, #1a6332 12.5% 25%);
+}
+@media (min-width: 56.25rem) {
+  .pitch-grass {
+    background:
+      radial-gradient(90% 120% at 75% 50%, rgb(255 255 255 / 0.07), transparent 60%),
+      repeating-linear-gradient(90deg, #1f7038 0 6.25%, #1a6332 6.25% 12.5%);
+  }
+}
+
+/* ───────────── Surfaces ─────────────
+   Static gradients for now. Phase 3 replaces .page-bg and the
+   wave fills with the live WebGL wave shader. */
+/* When the WebGL waves are running, the CSS gradients step aside.
+   If WebGL fails, they stay as the fallback. */
+html.webgl-on .page-bg,
+html.webgl-on [data-wave] {
+  background: transparent;
+}
+
+@layer components {
+  .page-bg {
+    background:
+      linear-gradient(180deg, #c4002f 0, #7a0d33 40vh, transparent 140vh),
+      radial-gradient(60% 40% at 0% 82%, rgb(255 0 61 / 0.55), transparent 70%),
+      radial-gradient(50% 30% at 100% 30%, rgb(80 11 40 / 0.6), transparent 70%),
+      linear-gradient(180deg, #2b2226 0%, #2a1c22 45%, #3a0f20 75%, #5a0a26 100%);
+  }
+
+  /* Deep wine wave panel (hero cards) */
+  .wave-wine {
+    background:
+      radial-gradient(90% 70% at 15% 20%, rgb(255 0 61 / 0.35), transparent 60%),
+      radial-gradient(80% 60% at 90% 90%, rgb(232 136 209 / 0.35), transparent 65%),
+      linear-gradient(160deg, #7a0d33 0%, #500b28 45%, #6e2a4f 100%);
+  }
+
+  /* Bright red skill card */
+  .wave-red {
+    background:
+      radial-gradient(90% 60% at 20% 100%, rgb(255 0 61 / 0.9), transparent 70%),
+      radial-gradient(70% 50% at 100% 0%, rgb(80 11 40 / 0.55), transparent 70%),
+      linear-gradient(180deg, #a3002a 0%, #d10033 60%, #ff003d 100%);
+  }
+
+  /* Full-bleed contact background */
+  .wave-contact {
+    background:
+      linear-gradient(180deg, #2a0712 0, transparent 8rem),
+      radial-gradient(60% 70% at 0% 100%, #ff003d, transparent 70%),
+      radial-gradient(50% 60% at 100% 0%, #ff003d, transparent 70%),
+      linear-gradient(135deg, #c4003a 0%, #7a0d33 50%, #e0003a 100%);
+  }
+
+  .contact-card {
+    background:
+      radial-gradient(80% 60% at 50% 120%, rgb(255 0 61 / 0.35), transparent 70%),
+      linear-gradient(180deg, #3a0717 0%, #2a0611 60%, #3d0a1c 100%);
+  }
+}
