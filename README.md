@@ -26,5 +26,4 @@ npm run build && firebase deploy --only hosting
 - `src/components/WaveCanvas.tsx` + `src/webgl/` — the living wave background. Any element with `data-wave="wine|red|contact|night|frame"` gets painted by it. Colors live in `src/webgl/palettes.ts`.
 
 ## Placeholders still to swap
-- BORK and Чайный Барыга card images (`image` field in `projects.ts`)
 - Font: Montserrat (variable) is standing in for AA Stetica (`--font-display` in `index.css`)
