@@ -1,8 +1,13 @@
-export type TagColor = 'wine' | 'pink' | 'white' | 'amber'
+import type { TechIconName } from '../components/TechIcon'
+
+export interface SkillTag {
+  label: string
+  icon: TechIconName
+}
 
 export interface SkillGroup {
   title: string
-  tags: { label: string; color: TagColor }[]
+  tags: SkillTag[]
 }
 
 export interface SkillCard {
@@ -11,9 +16,7 @@ export interface SkillCard {
   groups: SkillGroup[]
 }
 
-const wine = (label: string) => ({ label, color: 'wine' as const })
-const pink = (label: string) => ({ label, color: 'pink' as const })
-const white = (label: string) => ({ label, color: 'white' as const })
+const t = (label: string, icon: TechIconName): SkillTag => ({ label, icon })
 
 // Only list what you'd be happy to be asked about in an interview.
 export const skillCards: SkillCard[] = [
@@ -23,15 +26,29 @@ export const skillCards: SkillCard[] = [
     groups: [
       {
         title: 'Web development',
-        tags: ['HTML', 'CSS', 'React', 'TypeScript', 'Next.js', 'Git', 'Vercel'].map(wine),
+        tags: [
+          t('HTML', 'html'),
+          t('CSS', 'css'),
+          t('React', 'react'),
+          t('TypeScript', 'typescript'),
+          t('Next.js', 'nextjs'),
+          t('Git', 'git'),
+          t('Vercel', 'vercel'),
+        ],
       },
       {
         title: 'Backend & infrastructure',
-        tags: ['REST API', 'Next.js API routes', 'Firebase', 'CI/CD', 'Domains & servers'].map(wine),
+        tags: [
+          t('REST API', 'api'),
+          t('Next.js API routes', 'nextjs'),
+          t('Firebase', 'firebase'),
+          t('CI/CD', 'githubactions'),
+          t('Domains & servers', 'server'),
+        ],
       },
       {
         title: 'UX/UI design',
-        tags: ['Figma', 'Responsive design'].map(pink),
+        tags: [t('Figma', 'figma'), t('Responsive design', 'devices')],
       },
     ],
   },
@@ -41,11 +58,11 @@ export const skillCards: SkillCard[] = [
     groups: [
       {
         title: 'Cross-platform apps',
-        tags: ['Flutter', 'Dart', 'FlutterFlow'].map(white),
+        tags: [t('Flutter', 'flutter'), t('Dart', 'dart'), t('FlutterFlow', 'flow')],
       },
       {
         title: 'App backend',
-        tags: ['Firebase Auth', 'Firestore'].map(wine),
+        tags: [t('Firebase Auth', 'firebase'), t('Firestore', 'firebase')],
       },
     ],
   },
@@ -56,18 +73,18 @@ export const skillCards: SkillCard[] = [
       {
         title: 'AI advertisements & AI features',
         tags: [
-          white('Veo 3'),
-          wine('Higgsfield'),
-          pink('ElevenLabs'),
-          wine('Google AI Studio'),
-          pink('Midjourney'),
-          pink('Prompt engineering'),
-          { label: 'Nano Banana', color: 'amber' },
+          t('Veo 3', 'video'),
+          t('Higgsfield', 'video'),
+          t('ElevenLabs', 'elevenlabs'),
+          t('Google AI Studio', 'gemini'),
+          t('Midjourney', 'image'),
+          t('Prompt engineering', 'prompt'),
+          t('Nano Banana', 'gemini'),
         ],
       },
       {
         title: 'AI integration',
-        tags: [wine('LLM APIs')],
+        tags: [t('LLM APIs', 'chip')],
       },
     ],
   },

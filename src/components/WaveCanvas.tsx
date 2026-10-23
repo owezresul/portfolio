@@ -110,13 +110,19 @@ export default function WaveCanvas() {
       >
 
       const root = document.documentElement
+      // Touch devices scroll on a separate thread, so a canvas that paints the
+      // card backgrounds always trails the cards by a frame and feels laggy.
+      // There, the canvas only paints the page background and the cards keep
+      // their CSS gradients (which scroll natively, perfectly in sync).
+      const coarse = window.matchMedia('(pointer: coarse)').matches
+      const paintSurfaces = !coarse
       root.classList.add('webgl-on')
+      if (paintSurfaces) root.classList.add('webgl-surfaces')
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-      // Phones and weak machines: lower resolution and 30fps (the waves are slow anyway)
-      const coarse = window.matchMedia('(pointer: coarse)').matches
       const lowPower = (navigator.hardwareConcurrency ?? 8) <= 4
-      const halfRate = coarse || lowPower
+      // Weak machines: skip every other frame, but never while scrolling
+      const halfRate = lowPower
       const moving = () => animations.waveBackground && !reduceMotion.matches
 
       let dpr = 1
@@ -126,6 +132,10 @@ export default function WaveCanvas() {
       const px = (v: string) => parseFloat(v) || 0
 
       const collect = () => {
+        if (!paintSurfaces) {
+          surfaces = []
+          return
+        }
         surfaces = Array.from(document.querySelectorAll<HTMLElement>('[data-wave]')).map((el, i) => {
           const cs = getComputedStyle(el)
           return {
@@ -147,7 +157,8 @@ export default function WaveCanvas() {
 
       const resize = () => {
         // Soft waves don't need full retina resolution; keeps cheap phones smooth
-        dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : window.innerWidth < 900 ? 1.25 : 1.5)
+        // Soft blurry waves look the same at low resolution; phones get the cheapest setting
+        dpr = coarse ? 0.75 : Math.min(window.devicePixelRatio || 1, lowPower ? 1 : 1.5)
         canvas.width = Math.round(canvas.clientWidth * dpr)
         canvas.height = Math.round(canvas.clientHeight * dpr)
         collect()
@@ -242,7 +253,7 @@ export default function WaveCanvas() {
       let frame = 0
       const loop = (now: number) => {
         raf = requestAnimationFrame(loop)
-        if (halfRate && frame++ % 2) return
+        if (halfRate && !dirty && frame++ % 2) return
         if (!moving()) {
           const sig = signature()
           if (sig !== lastSig) {
@@ -265,7 +276,7 @@ export default function WaveCanvas() {
       const onLost = (e: Event) => {
         e.preventDefault()
         cancelAnimationFrame(raf)
-        root.classList.remove('webgl-on') // fall back to CSS gradients
+        root.classList.remove('webgl-on', 'webgl-surfaces') // fall back to CSS gradients
       }
 
       resize()
@@ -289,7 +300,7 @@ export default function WaveCanvas() {
         document.removeEventListener('pointerleave', onLeave)
         reduceMotion.removeEventListener('change', onScroll)
         canvas.removeEventListener('webglcontextlost', onLost)
-        root.classList.remove('webgl-on')
+        root.classList.remove('webgl-on', 'webgl-surfaces')
       }
     }
   }, [])

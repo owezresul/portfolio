@@ -87,6 +87,18 @@ body {
 /* ───────────── Idle objects in project cards ─────────────
    They use the individual translate/rotate properties so they never
    fight with transforms set by GSAP or hover effects. */
+.decor-float,
+.decor-float-slow,
+.decor-float-gentle,
+.decor-spin,
+.decor-sway {
+  will-change: translate, rotate;
+}
+/* Cards outside the screen pause their idle animations (saves battery/CPU) */
+[data-project-card]:not([data-in-view]) * {
+  animation-play-state: paused !important;
+}
+
 .decor-float {
   animation: decor-float 3.2s ease-in-out infinite;
 }
@@ -235,8 +247,11 @@ body {
 /* When the WebGL waves are running, the CSS gradients step aside.
    If WebGL fails, they stay as the fallback. */
 html.webgl-on .page-bg,
-html.webgl-on [data-wave] {
+html.webgl-surfaces [data-wave] {
   background: transparent;
+}
+html.webgl-surfaces .wave-contact::before {
+  display: none;
 }
 
 @layer components {
@@ -265,12 +280,22 @@ html.webgl-on [data-wave] {
   }
 
   /* Full-bleed contact background */
+  /* The red lives on a pseudo-element whose top fades to transparent,
+     so it melts into whatever page background is above it (no hard edge) */
   .wave-contact {
+    isolation: isolate;
+  }
+  .wave-contact::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     background:
-      linear-gradient(180deg, #2a0712 0, transparent 8rem),
       radial-gradient(60% 70% at 0% 100%, #ff003d, transparent 70%),
       radial-gradient(50% 60% at 100% 0%, #ff003d, transparent 70%),
       linear-gradient(135deg, #c4003a 0%, #7a0d33 50%, #e0003a 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 9rem);
+    mask-image: linear-gradient(180deg, transparent 0, #000 9rem);
   }
 
   .contact-card {

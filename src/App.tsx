@@ -1,4 +1,5 @@
 import { useAnimations } from './animations/useAnimations'
+import { usePauseOffscreen } from './animations/usePauseOffscreen'
 import Contact from './components/Contact'
 import Hero from './components/Hero'
 import Portfolio from './components/Portfolio'
@@ -7,6 +8,7 @@ import WaveCanvas from './components/WaveCanvas'
 
 export default function App() {
   useAnimations()
+  usePauseOffscreen()
 
   return (
     <div className="page-bg relative isolate">

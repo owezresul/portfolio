@@ -18,7 +18,7 @@ npm run build && firebase deploy --only hosting
 
 ## Where things live
 - `src/data/projects.ts` — portfolio cards. Add a project = add an entry.
-- `src/data/skills.ts` — skill cards and tags (tag colors: wine, pink, white, amber).
+- `src/data/skills.ts` — skill cards and tags; each tag has a label and an icon (logos in `src/components/TechIcon.tsx`).
 - `src/data/contact.ts` — email / Telegram / GitHub handles.
 - `src/index.css` — color + font tokens and the background gradients.
 - `src/animations/config.ts` — on/off switch for every animation.

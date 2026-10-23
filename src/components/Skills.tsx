@@ -1,14 +1,14 @@
 import { animations } from '../animations/config'
-import { skillCards, type TagColor } from '../data/skills'
+import { skillCards } from '../data/skills'
 import DotDivider from './DotDivider'
 import SectionTitle from './SectionTitle'
+import TechIcon from './TechIcon'
 
-const TAG: Record<TagColor, string> = {
-  wine: 'bg-wine text-white',
-  pink: 'bg-pink text-white',
-  white: 'bg-white text-black',
-  amber: 'bg-amber text-white',
-}
+/** Dark glass pill: a deep wine tint behind white text keeps it readable on the bright red */
+const PILL =
+  'flex items-center gap-[0.5em] rounded-full border border-white/20 bg-[rgb(40_2_14/0.45)] px-[1em] py-[0.5em] font-semibold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.12)] text-[clamp(0.9rem,1.15vw,1.35rem)] leading-none'
+const PILL_HOVER =
+  'transition-[background-color,border-color,translate] duration-200 hover:-translate-y-0.5 hover:border-white/50 hover:bg-[rgb(40_2_14/0.65)] motion-reduce:transition-none'
 
 
 export default function Skills() {
@@ -33,15 +33,14 @@ export default function Skills() {
                     <h4 className="font-condensed text-[clamp(1.6rem,2.7vw,3.6rem)] leading-none uppercase">
                       {group.title}
                     </h4>
-                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                    <ul className="mt-3 flex flex-wrap gap-2">
                       {group.tags.map((tag) => (
                         <li
                           key={tag.label}
                           data-skill-tag
-                          className={`font-condensed px-2 pt-[0.3em] pb-[0.05em] text-[clamp(1rem,1.6vw,2.1rem)] leading-none uppercase ${TAG[tag.color]} ${
-                            animations.skillTags ? 'transition-[filter,translate] duration-200 hover:-translate-y-0.5 hover:brightness-125 motion-reduce:transition-none' : ''
-                          }`}
+                          className={`${PILL} ${animations.skillTags ? PILL_HOVER : ''}`}
                         >
+                          <TechIcon name={tag.icon} className="size-[1.15em] shrink-0" />
                           {tag.label}
                         </li>
                       ))}
