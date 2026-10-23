@@ -16,6 +16,7 @@ export const animations = {
   magneticIcons: true, // contact icons pull toward the cursor
   copyEmailToast: true, // click email → copied toast
   smoothScroll: true, // Lenis
+  browserPreview: true, // AlmaPro card: browser window opens in 3D, the page scrolls itself, stack chips pop in
   idleObjects: true, // floating football, swaying bouquet, drifting petals in project cards
 } as const
 

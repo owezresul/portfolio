@@ -40,6 +40,18 @@ export const projects: Project[] = [
     mobileMinH: 'min-h-[28rem]',
   },
   {
+    id: 'almapro',
+    title: 'AlmaPro',
+    titleStyle: 'bold',
+    description:
+      'A commercial online store for premium electronics in Ashgabat: iPhones, Samsung flagships, MacBooks and accessories, with brand catalogs, product options and a cart. I built it full-stack, with a Go and GraphQL API on PostgreSQL and a React front end.',
+    href: 'https://almapro.com.tm',
+    theme: 'dark',
+    size: 'full',
+    decor: 'browser',
+    mobileMinH: 'min-h-[30rem]',
+  },
+  {
     id: 'chainy-baryga',
     title: 'Tea',
     titleAccent: 'dealer',

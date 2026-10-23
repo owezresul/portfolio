@@ -128,6 +128,70 @@ export function useAnimations() {
         })
       }
 
+      // ── Browser preview (AlmaPro card) ─────────────────────────────
+      if (A.browserPreview) {
+        for (const scene of q('[data-browser-scene]')) {
+          const win = scene.querySelector<HTMLElement>('[data-browser-window]')
+          const page = scene.querySelector<HTMLElement>('[data-browser-page]')
+          const chips = q('[data-stack-chip]', scene)
+          if (!win || !page) continue
+
+          // The window swings up like a laptop lid, then the chips pop in
+          gsap
+            .timeline({ scrollTrigger: { trigger: scene, start: 'top 85%', once: true } })
+            .from(win, {
+              rotationX: 38,
+              y: 50,
+              opacity: 0,
+              transformOrigin: '50% 100%',
+              duration: 1.2,
+              ease: 'power3.out',
+            })
+            .from(chips, { opacity: 0, scale: 0.4, y: 14, duration: 0.5, ease: 'back.out(2.5)', stagger: 0.12 }, '-=0.5')
+            .add(() => {
+              // Chips keep bobbing at slightly different speeds
+              chips.forEach((chip, i) =>
+                gsap.to(chip, { y: i % 2 ? 6 : -6, duration: 2.2 + i * 0.4, ease: 'sine.inOut', yoyo: true, repeat: -1 }),
+              )
+            })
+
+          // The site scrolls itself down and back, like someone browsing it
+          const browse = gsap.fromTo(
+            page,
+            { objectPosition: '50% 0%' },
+            { objectPosition: '50% 100%', duration: 9, ease: 'sine.inOut', yoyo: true, repeat: -1, repeatDelay: 1.2, paused: true },
+          )
+          ScrollTrigger.create({
+            trigger: scene,
+            start: 'top bottom',
+            end: 'bottom top',
+            onToggle: (self) => (self.isActive ? browse.play() : browse.pause()),
+          })
+
+          // Window tilts toward the cursor while hovering the card
+          const card = scene.closest<HTMLElement>('[data-project-card]')
+          if (finePointer && card) {
+            const rx = gsap.quickTo(win, 'rotationX', { duration: 0.7, ease: 'power3' })
+            const ry = gsap.quickTo(win, 'rotationY', { duration: 0.7, ease: 'power3' })
+            const move = (e: PointerEvent) => {
+              const r = card.getBoundingClientRect()
+              ry(((e.clientX - r.left) / r.width - 0.5) * 14)
+              rx(-((e.clientY - r.top) / r.height - 0.5) * 10)
+            }
+            const leave = () => {
+              rx(0)
+              ry(0)
+            }
+            card.addEventListener('pointermove', move)
+            card.addEventListener('pointerleave', leave)
+            cleanups.push(() => {
+              card.removeEventListener('pointermove', move)
+              card.removeEventListener('pointerleave', leave)
+            })
+          }
+        }
+      }
+
       // ── Skill cards + tags ─────────────────────────────────────────
       if (A.skillTags) {
         for (const card of q('[data-skill-card]')) {
