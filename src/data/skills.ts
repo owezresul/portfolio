@@ -23,11 +23,13 @@ export const skillCards: SkillCard[] = [
     groups: [
       {
         title: 'Web development',
-        tags: ['HTML', 'CSS', 'React', 'TypeScript', 'Next.js', 'Git', 'Vercel'].map(wine),
+        tags: ['HTML', 'CSS', 'JavaScript', 'React', 'TypeScript', 'Next.js', 'Git', 'Vercel'].map(wine),
       },
       {
         title: 'Backend & infrastructure',
-        tags: ['REST API', 'Next.js API routes', 'Firebase', 'CI/CD', 'Domains & servers'].map(wine),
+        tags: ['Go', 'GraphQL', 'PostgreSQL', 'REST API', 'Next.js API routes', 'Firebase', 'CI/CD', 'Domains & servers'].map(
+          wine,
+        ),
       },
       {
         title: 'UX/UI design',

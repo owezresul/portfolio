@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { animations } from '../animations/config'
+import almapro from '../assets/projects/almapro.webp'
 import ball from '../assets/projects/ball.webp'
 import tea from '../assets/projects/tea.webp'
 import trophy from '../assets/projects/trophy.webp'
@@ -9,7 +10,7 @@ const HOVER = animations.projectCards
   ? 'origin-bottom transition-[scale] duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none'
   : ''
 
-export type DecorKind = 'pitch' | 'petals' | 'tea'
+export type DecorKind = 'pitch' | 'petals' | 'tea' | 'browser'
 
 /**
  * Small decorative objects that live inside a project card and move on
@@ -20,6 +21,7 @@ export default function ProjectDecor({ kind }: { kind: DecorKind }) {
   const on = animations.idleObjects
   if (kind === 'pitch') return <PitchScene animate={on} />
   if (kind === 'tea') return <TeaScene animate={on} />
+  if (kind === 'browser') return <BrowserScene />
   return <Petals animate={on} />
 }
 
@@ -225,6 +227,78 @@ function TeaScene({ animate }: { animate: boolean }) {
             <TeaLeaf size={l.size} />
           </span>
         ))}
+    </>
+  )
+}
+
+/* ───────── AlmaPro: browser window with the live site + stack chips ─────────
+   The motion (window opening in 3D, page scrolling itself, chips popping in,
+   cursor parallax) is done with GSAP in useAnimations.ts. Without it this
+   is a still screenshot in a browser frame. */
+
+const STACK = [
+  { label: 'Go', className: 'top-[18%] -left-[1%] desk:top-[10%] desk:-left-[6%]' },
+  { label: 'GraphQL', className: 'top-[42%] -right-[1%] desk:top-[4%] desk:right-[6%]' },
+  { label: 'PostgreSQL', className: 'bottom-[20%] -left-[1%] desk:bottom-[16%] desk:-left-[9%]' },
+  { label: 'React', className: 'bottom-[4%] right-[8%] desk:-bottom-[2%] desk:right-[14%]' },
+]
+
+function BrowserScene() {
+  return (
+    <>
+      {/* Soft blue glow behind the window */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-[2%] right-[2%] -z-[8] aspect-square w-[80%] rounded-full bg-[radial-gradient(circle,rgb(124_58_237/0.3),transparent_65%)] desk:top-[-20%] desk:right-[4%] desk:w-[52%]"
+      />
+
+      <div
+        aria-hidden="true"
+        data-browser-scene
+        className="pointer-events-none absolute top-5 right-5 left-5 -z-[5] h-[52%] [perspective:1200px] desk:top-[9%] desk:right-[5%] desk:left-auto desk:h-[82%] desk:w-[52%]"
+      >
+        <div data-browser-window className={`relative mx-auto aspect-[16/10] max-h-full max-w-full ${HOVER}`}>
+          <div className="flex size-full flex-col overflow-hidden rounded-xl border border-white/15 bg-[#0d0f14] shadow-[0_30px_60px_-20px_rgb(0_0_0/0.8)]">
+            {/* Browser chrome */}
+            <div className="flex items-center gap-1.5 border-b border-white/10 px-3 py-2">
+              <span className="size-2 rounded-full bg-[#ff5f57]" />
+              <span className="size-2 rounded-full bg-[#febc2e]" />
+              <span className="size-2 rounded-full bg-[#28c840]" />
+              <span className="ml-2 truncate rounded-full bg-white/8 px-3 py-0.5 text-[0.6rem] text-white/55 desk:text-[0.7rem]">
+                almapro.com.tm
+              </span>
+            </div>
+            <div className="relative flex-1 overflow-hidden">
+              <img
+                src={almapro}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                data-browser-page
+                className="absolute inset-0 size-full object-cover object-top"
+              />
+              {/* Glass reflection */}
+              <div className="absolute inset-0 bg-[linear-gradient(115deg,rgb(255_255_255/0.08)_0%,transparent_35%)]" />
+            </div>
+          </div>
+
+          {STACK.map((chip) => (
+            <span
+              key={chip.label}
+              data-stack-chip
+              className={`absolute rounded-full border border-white/20 bg-black/70 px-2.5 py-1 text-[0.6rem] font-semibold text-white backdrop-blur-sm desk:px-3.5 desk:py-1.5 desk:text-[clamp(0.7rem,0.75vw,0.95rem)] ${chip.className}`}
+            >
+              {chip.label}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Keeps the text readable where it overlaps the window */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-[4] bg-gradient-to-t from-black via-black/85 via-35% to-transparent to-55% desk:bg-gradient-to-r desk:via-black/60 desk:via-30% desk:to-50%"
+      />
     </>
   )
 }
