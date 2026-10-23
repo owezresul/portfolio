@@ -29,6 +29,7 @@ export const skillCards: SkillCard[] = [
         tags: [
           t('HTML', 'html'),
           t('CSS', 'css'),
+          t('JavaScript', 'javascript'),
           t('React', 'react'),
           t('TypeScript', 'typescript'),
           t('Next.js', 'nextjs'),
@@ -39,6 +40,9 @@ export const skillCards: SkillCard[] = [
       {
         title: 'Backend & infrastructure',
         tags: [
+          t('Go', 'go'),
+          t('GraphQL', 'graphql'),
+          t('PostgreSQL', 'postgresql'),
           t('REST API', 'api'),
           t('Next.js API routes', 'nextjs'),
           t('Firebase', 'firebase'),
