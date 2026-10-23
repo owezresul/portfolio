@@ -249,7 +249,7 @@ function BrowserScene() {
       {/* Soft blue glow behind the window */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-[2%] right-[2%] -z-[8] aspect-square w-[80%] rounded-full bg-[radial-gradient(circle,rgb(64_132_255/0.28),transparent_65%)] desk:top-[-20%] desk:right-[4%] desk:w-[52%]"
+        className="pointer-events-none absolute top-[2%] right-[2%] -z-[8] aspect-square w-[80%] rounded-full bg-[radial-gradient(circle,rgb(124_58_237/0.3),transparent_65%)] desk:top-[-20%] desk:right-[4%] desk:w-[52%]"
       />
 
       <div
